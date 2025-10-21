@@ -297,6 +297,33 @@ document.addEventListener('click', (e) => {
 // 4) Toast global rápido
 window.flash = (msg) => showToast(msg);
 
+/* ====== Lite YouTube loader (video ligero) ====== */
+(function initLiteYouTube(){
+  const btns = document.querySelectorAll('.lite-video[data-yt]');
+  if(!btns.length) return;
+
+  btns.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.getAttribute('data-yt');
+      if(!id) return;
+
+      // Usamos nocookie y autoplay; rel=0 y modestbranding para limpio
+      const src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+      const iframe = document.createElement('iframe');
+      iframe.className = 'lite-iframe';
+      iframe.setAttribute('title','Video YouTube — Musicala');
+      iframe.setAttribute('allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+      iframe.setAttribute('allowfullscreen','');
+      iframe.setAttribute('loading','lazy');
+      iframe.setAttribute('referrerpolicy','strict-origin-when-cross-origin');
+      iframe.src = src;
+
+      btn.replaceChildren(iframe);
+      if (window.flash) window.flash('▶ Reproduciendo video');
+    }, { once:true });
+  });
+})();
+
 /* ---------- Bootstrap ---------- */
 (async function main(){
   // Carga opcional de config (solo si agregas data-config en #app)
